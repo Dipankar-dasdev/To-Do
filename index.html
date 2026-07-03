@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>To-Do List</h1>
+        <p>Add your tasks here!</p>
+      </header>
+      <section class="add-task-section">
+        <div class="add-task">
+          <select class="priority">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <input type="text" class="task-input" placeholder="Enter your task" />
+          <button class="add-button" id="add-task-button">+</button>
+        </div>
+      </section>
+      <section class="task-list-section">
+        <div class="task-list">
+          <!-- <div class="task-item">
+            <input type="checkbox" class="task-checkbox" />
+            <span class="task-text">Sample Task 1</span>
+            <button class="delete-button">X</button>
+          </div> -->
+        </div>
+      </section>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
