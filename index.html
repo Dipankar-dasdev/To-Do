@@ -12,9 +12,10 @@
         <h1>To-Do List</h1>
         <p>Add your tasks here!</p>
       </header>
+      <p  id="task-warning" class="show">Please enter your tasks before adding!!</p>
       <section class="add-task-section">
         <div class="add-task">
-          <select class="priority">
+          <select class="priority" id="priority">
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
@@ -22,9 +23,16 @@
           <input type="text" class="task-input" placeholder="Enter your task" />
           <button class="add-button" id="add-task-button">+</button>
         </div>
+        <div class="task-count">
+          <span id="task-count">0</span> tasks
+        </div>
       </section>
       <section class="task-list-section">
         <div class="task-list">
+          <div class="no-task">
+            <h2>No tasks yet!</h2>
+            <h3>Add a task to get started</h3>
+          </div>
           <!-- <div class="task-item">
             <input type="checkbox" class="task-checkbox" />
             <span class="task-text">Sample Task 1</span>

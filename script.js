@@ -3,8 +3,11 @@ console.log("Script loaded");
 const addTaskButton = document.getElementById("add-task-button");
 const taskInput = document.querySelector(".task-input");
 const taskList = document.querySelector(".task-list");
+const priority=document.getElementById("priority");
+const taskWarning = document.getElementById("task-warning");
 
 addTaskButton.addEventListener("click", addTask);
+
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
@@ -14,21 +17,24 @@ document.addEventListener("keydown", function (event) {
 
 function addTask() {
   const taskText = taskInput.value.trim();
+  const taskPriority = priority.value;
 
-  if (taskText === "") {
-    alert("Please enter a task before adding.");
-    return;
+  if (!taskText) {
+    taskWarning.style.display = "block";
+  }else{
+    taskWarning.style.display = "none";
+    const taskItem = createTask(taskText, taskPriority);
+
+    taskList.appendChild(taskItem);
+    taskInput.value = "";
+    updateNoTaskMessage();
   }
-
-  const taskItem = createTask(taskText);
-
-  taskList.appendChild(taskItem);
-  taskInput.value = "";
 }
 
-function createTask(taskText) {
+function createTask(taskText, taskPriority) {
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item");
+  taskItem.classList.add(taskPriority);
 
   const checkbox = createCheckbox();
 
@@ -44,6 +50,7 @@ function createTask(taskText) {
 
   deleteButton.addEventListener("click", function () {
     taskItem.remove();
+    updateNoTaskMessage();
   });
 
   taskItem.appendChild(checkbox);
@@ -66,3 +73,20 @@ function createDeleteButton() {
   button.classList.add("delete-button");
   return button;
 }
+
+const noTaskDiv = document.querySelector(".no-task");
+const taskCountSpan = document.getElementById("task-count");
+
+function updateNoTaskMessage() {
+
+  const taskCount = taskList.childElementCount;
+
+  taskCountSpan.textContent = taskCount-1;
+
+  if (taskCount === 1) {
+    noTaskDiv.style.display = "block";
+  } else {
+    noTaskDiv.style.display = "none";
+  }
+}
+
