@@ -106,7 +106,7 @@ body {
 }
 
 .completed {
-  color: #888;
+  color: #302929;
   text-decoration: line-through;
   font-style: italic;
   opacity: 0.6;
