@@ -116,11 +116,11 @@ body {
 
 .delete-button {
   padding: 10px 15px;
-  border: 2px solid #d21403;
+  border: 3px inset #d21403;
   border-radius: 15px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 
-  background-color: #ff0000;
+  background-color: transparent;
   color: #fff;
 
   cursor: pointer;
@@ -129,6 +129,22 @@ body {
 
 .delete-button:hover {
   background-color: #df8282;
+  transform: translateY(-3px);
+}
+
+.edit{
+  background-color: transparent;
+  border-radius: 15px;
+  border: 3px inset rgb(201, 139, 25);
+  padding: 9px 11px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  margin-right: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.25s;
+}
+
+.edit:hover {
+  background-color: rgb(239, 185, 84);
   transform: translateY(-3px);
 }
 
@@ -157,13 +173,20 @@ body {
 
 .High {
   /* border-left: 5px solid #ff0000; */
-  background-color: #FB3422;
+  /* background-color: #FB3422; */
+  border-bottom: 4px groove #fb3422;
 }
 .Medium {
   /* border-left: 5px solid #ffff00; */ 
-  background-color: #FFD54F;
+  /* background-color: #FFD54F; */
+  border-bottom: 4px groove #ffd54f;
 }
 .Low {
   /* border-left: 5px solid #00ff00; */
-  background-color: #66BB6A;
+  /* background-color: #66BB6A; */
+  border-bottom: 4px groove #66bb6a;
+}
+
+.editText{
+  width : 100%;
 }

@@ -52,6 +52,10 @@ function addTask() {
 }
 
 function createTask(task) {
+  const editinput = document.createElement("input");
+  editinput.classList.add("editText");
+  editinput.hidden = true;
+
   const taskItem = document.createElement("div");
   taskItem.classList.add("task-item", task.taskPriority);
 
@@ -65,6 +69,7 @@ function createTask(task) {
   text.classList.toggle("completed", task.completed);
 
   const deleteButton = createDeleteButton();
+  const editButton = createEditButton();
 
   checkbox.addEventListener("change", function () {
     task.completed = checkbox.checked;
@@ -81,8 +86,30 @@ function createTask(task) {
     updateNoTaskMessage();
   });
 
+  editButton.addEventListener("click", function(){
+    if(editinput.hidden === true){
+      console.log("clicked");
+      text.hidden = true;
+      editinput.hidden = false;
+      editinput.value = task.taskText;
+      editButton.textContent="✔️";
+      editinput.focus();
+      editinput.select();
+    }else{
+      task.taskText = editinput.value;
+      text.textContent = task.taskText;
+      editinput.hidden = true;
+      text.hidden = false;
+      editButton.textContent = "✏️";
+      saveTasks();
+    }
+      
+  });
+
   taskItem.appendChild(checkbox);
   taskItem.appendChild(text);
+  taskItem.appendChild(editinput);
+  taskItem.appendChild(editButton);
   taskItem.appendChild(deleteButton);
 
   return taskItem;
@@ -103,6 +130,14 @@ function createDeleteButton() {
 
   return button;
 }
+
+function createEditButton(){
+  const button = document.createElement("button");
+  button.textContent="✏️";
+  button.classList.add("edit");
+
+  return button;
+};
 
 function updateNoTaskMessage() {
   const taskCount = tasks.length;
