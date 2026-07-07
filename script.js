@@ -7,6 +7,7 @@ const priority = document.getElementById("priority");
 const taskWarning = document.getElementById("task-warning");
 const noTaskDiv = document.querySelector(".no-task");
 const taskCountSpan = document.getElementById("task-count");
+const filters = document.querySelectorAll(".task-filter");
 
 for (const task of tasks) {
   taskList.appendChild(createTask(task));
@@ -16,11 +17,13 @@ updateNoTaskMessage();
 
 addTaskButton.addEventListener("click", addTask);
 
-document.addEventListener("keydown", function (event) {
+taskInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     addTask();
   }
 });
+
+setupFilters();
 
 function addTask() {
   const taskText = taskInput.value.trim();
@@ -39,12 +42,11 @@ function addTask() {
     completed: false,
   };
 
-  tasks.push(task);
+  tasks.unshift(task);
   saveTasks();
 
-  const taskItem = createTask(task);
-
-  taskList.appendChild(taskItem);
+  const taskCard = createTask(task);
+  taskList.prepend(taskCard);
 
   taskInput.value = "";
 
@@ -56,29 +58,32 @@ function createTask(task) {
   editinput.classList.add("editText");
   editinput.hidden = true;
 
-  const taskItem = document.createElement("div");
-  taskItem.classList.add("task-item", task.taskPriority);
+  const taskCard = document.createElement("div");
+  // taskCard.classList.add("task-item", task.taskPriority);
+  taskCard.classList.add("task-item");
+  taskCard.dataset.priority = task.taskPriority;
 
   const checkbox = createCheckbox();
   checkbox.checked = task.completed;
 
-  const text = document.createElement("span");
-  text.classList.add("task-text");
-  text.textContent = task.taskText;
+  // const text = document.createElement("span");
+  // text.classList.add("task-text");
+  // text.textContent = task.taskText;
 
-  text.classList.toggle("completed", task.completed);
+  const { taskContent, taskTitle, priorityBadge } = createTaskContent(task);
+  taskTitle.classList.toggle("completed", task.completed);
 
   const deleteButton = createDeleteButton();
   const editButton = createEditButton();
 
   checkbox.addEventListener("change", function () {
     task.completed = checkbox.checked;
-    text.classList.toggle("completed", checkbox.checked);
+    taskTitle.classList.toggle("completed", checkbox.checked);
     saveTasks();
   });
 
   deleteButton.addEventListener("click", function () {
-    taskItem.remove();
+    taskCard.remove();
 
     tasks.splice(tasks.indexOf(task), 1);
 
@@ -86,33 +91,114 @@ function createTask(task) {
     updateNoTaskMessage();
   });
 
-  editButton.addEventListener("click", function(){
-    if(editinput.hidden === true){
-      console.log("clicked");
-      text.hidden = true;
+  editButton.addEventListener("click", function () {
+    taskWarning.style.display = "none";
+
+    if (editinput.hidden) {
+      taskTitle.hidden = true;
+      priorityBadge.hidden = true;
+
       editinput.hidden = false;
       editinput.value = task.taskText;
-      editButton.textContent="✔️";
+
+      editButton.textContent = "✔️";
+
       editinput.focus();
       editinput.select();
-    }else{
-      task.taskText = editinput.value;
-      text.textContent = task.taskText;
+    } else {
+      if (editinput.value.trim() === "") {
+        taskWarning.style.display = "block";
+        return;
+      }
+
+      task.taskText = editinput.value.trim();
+      taskTitle.textContent = task.taskText;
+
       editinput.hidden = true;
-      text.hidden = false;
+      taskTitle.hidden = false;
+      priorityBadge.hidden = false;
+
       editButton.textContent = "✏️";
+
       saveTasks();
     }
-      
   });
 
-  taskItem.appendChild(checkbox);
-  taskItem.appendChild(text);
-  taskItem.appendChild(editinput);
-  taskItem.appendChild(editButton);
-  taskItem.appendChild(deleteButton);
+  editinput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      editButton.click();
+    }
+  });
 
-  return taskItem;
+  taskCard.appendChild(checkbox);
+  // taskCard.appendChild(text);
+  taskCard.appendChild(taskContent);
+  taskCard.appendChild(editinput);
+  taskCard.appendChild(editButton);
+  taskCard.appendChild(deleteButton);
+
+  return taskCard;
+}
+
+function setupFilters() {
+  for (const button of filters) {
+    button.addEventListener("click", function (event) {
+      const clickedButton = event.currentTarget;
+      const selectedFilter = clickedButton.textContent;
+      const taskCards = document.querySelectorAll(".task-item");
+      for (const task of taskCards) {
+        if (selectedFilter === "All") {
+          console.log(task);
+          task.style.display = "flex";
+        } else if (
+          selectedFilter === "High" ||
+          selectedFilter === "Low" ||
+          selectedFilter === "Medium"
+        ) {
+          if (selectedFilter === task.dataset.priority) {
+            task.style.display = "flex";
+          } else {
+            task.style.display = "none";
+          }
+        } else if (
+          selectedFilter === "Completed" ||
+          selectedFilter === "Active"
+        ) {
+          const completedTask = task.querySelector(".completed");
+          if (selectedFilter === "Completed" && completedTask) {
+            task.style.display = "flex";
+          } else if (selectedFilter === "Active" && !completedTask) {
+            task.style.display = "flex";
+          } else {
+            task.style.display = "none";
+          }
+        }
+      }
+    });
+  }
+}
+
+function createTaskContent(task) {
+  const taskContent = document.createElement("div");
+  taskContent.classList.add("task-content");
+
+  const taskTitle = document.createElement("div");
+  taskTitle.classList.add("task-text");
+  taskTitle.textContent = task.taskText;
+
+  const priorityBadge = document.createElement("div");
+  priorityBadge.classList.add("task-p");
+  priorityBadge.classList.add(task.taskPriority);
+  priorityBadge.textContent = task.taskPriority;
+
+  taskContent.appendChild(taskTitle);
+  taskContent.appendChild(priorityBadge);
+
+  return {
+    taskContent,
+    taskTitle,
+    priorityBadge,
+  };
 }
 
 function createCheckbox() {
@@ -131,13 +217,13 @@ function createDeleteButton() {
   return button;
 }
 
-function createEditButton(){
+function createEditButton() {
   const button = document.createElement("button");
-  button.textContent="✏️";
+  button.textContent = "✏️";
   button.classList.add("edit");
 
   return button;
-};
+}
 
 function updateNoTaskMessage() {
   const taskCount = tasks.length;

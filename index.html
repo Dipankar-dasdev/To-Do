@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>ToDo</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="style.css" rel="stylesheet" />
@@ -12,8 +12,8 @@
         <h1>To-Do List</h1>
         <p>Add your tasks here!</p>
       </header>
-      <p  id="task-warning" class="show">Please enter your tasks before adding!!</p>
       <section class="add-task-section">
+        <p id="task-warning" class="show">Please enter your tasks befor</p>
         <div class="add-task">
           <select class="priority" id="priority">
             <option value="High">High</option>
@@ -23,9 +23,15 @@
           <input type="text" class="task-input" placeholder="Enter your task" />
           <button class="add-button" id="add-task-button">+</button>
         </div>
-        <div class="task-count">
-          <span id="task-count">0</span> tasks
+        <div class="filter">
+          <button class="all-task task-filter">All</button>
+          <button class="high-task task-filter">High</button>
+          <button class="low-task task-filter">Low</button>
+          <button class="medium-task task-filter">Medium</button>
+          <button class="completed-task task-filter">Completed</button>
+          <button class="active-task task-filter">Active</button>
         </div>
+        <div class="task-count"><span id="task-count">0</span> tasks</div>
       </section>
       <section class="task-list-section">
         <div class="task-list">
@@ -35,7 +41,10 @@
           </div>
           <!-- <div class="task-item">
             <input type="checkbox" class="task-checkbox" />
-            <span class="task-text">Sample Task 1</span>
+            <div class="task-content">
+              <div class="task-text">jfhj</div>
+              <div class="task-p">medium</div>
+            </div>
             <button class="edit">✏️</button>
             <button class="delete-button">X</button>
           </div> -->
